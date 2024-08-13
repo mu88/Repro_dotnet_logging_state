@@ -8,15 +8,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Logging.AddJsonConsole(options =>
-{
-    options.IncludeScopes = false;
-    options.TimestampFormat = "HH:mm:ss ";
-    options.JsonWriterOptions = new JsonWriterOptions
-    {
-        Indented = true
-    };
-});
+builder.Logging.AddConsole(options => options.FormatterName = "CustomServiceRuntimeContractFormatter");
+builder.Logging.AddConsoleFormatter<CustomServiceRuntimeContractFormatter, CustomServiceRuntimeContractFormatterOptions>();
 
 WebApplication app = builder.Build();
 
