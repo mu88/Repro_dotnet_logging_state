@@ -29,32 +29,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/hello", () =>
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        app.Logger.Temperatures(forecast.Select(weatherForecast => weatherForecast.TemperatureC.ToString()));
-        app.Logger.TemperaturesAndSummaries(forecast.Select(weatherForecast => weatherForecast.TemperatureC.ToString()),
-            forecast.Select(weatherForecast => weatherForecast.Summary));
-        return forecast;
+        var pets = new List<string> { "dog", "cat" };
+        var nationalities = new List<string> { "german", "swiss" };
+        app.Logger.Pets(pets);
+        app.Logger.NationalitiesAndPetsInDifferentOrder(nationalities, pets);
+        app.Logger.PetsAndNationalitiesInSameOrder(pets, nationalities);
     })
-    .WithName("GetWeatherForecast")
     .WithOpenApi();
 
 await app.RunAsync();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
